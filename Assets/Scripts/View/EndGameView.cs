@@ -56,6 +56,7 @@ public class EndGameView : View
         {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
+
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
