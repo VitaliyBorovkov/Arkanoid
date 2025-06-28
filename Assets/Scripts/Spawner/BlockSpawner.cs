@@ -5,10 +5,7 @@ using UnityEngine;
 public class BlockSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject blockPrefab;
-    [SerializeField] private BlockSettings blockSettings;
-
-    [SerializeField] private int blockRows = 5;
-    [SerializeField] private int blockColumns = 10;
+    [SerializeField] private LevelData levelData;
     [SerializeField] private float blockSpacingX = 1.1f;
     [SerializeField] private float blockSpacingY = 0.5f;
     [SerializeField] private Vector2 startPosition = new Vector2(-5f, 3f);
@@ -24,25 +21,47 @@ public class BlockSpawner : MonoBehaviour
 
     public void SpawnBlocks()
     {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         int totalSpawnedBlocks = 0;
 
-        for (int row = 0; row < blockRows; row++)
+        if (levelData == null || levelData.rows == null)
         {
-            for (int col = 0; col < blockColumns; col++)
+            Debug.LogError("[BlockSpawner] LevelData is null or empty!");
+            return;
+        }
+
+        for (int row = 0; row < levelData.rows.Length; row++)
+        {
+            BlockLayoutRow layoutRow = levelData.rows[row];
+            if (layoutRow == null || layoutRow.blocksInRow == null)
+                continue;
+
+            for (int col = 0; col < layoutRow.blocksInRow.Length; col++)
             {
-                Vector2 position = new Vector2(startPosition.x + col * blockSpacingX, startPosition.y - row * blockSpacingY);
+                BlockSettings settings = layoutRow.blocksInRow[col];
+                if (settings == null) continue;
+
+                Vector2 position = new Vector2(
+                    startPosition.x + col * blockSpacingX,
+                    startPosition.y - row * blockSpacingY
+                );
 
                 GameObject block = Instantiate(blockPrefab, position, Quaternion.identity, transform);
                 BlockView blockView = block.GetComponent<BlockView>();
                 if (blockView != null)
                 {
                     injector.Inject(blockView);
-                    blockView.Initialize(blockSettings);
+                    blockView.Initialize(settings);
                     totalSpawnedBlocks++;
                 }
             }
         }
+
         blockCounterService.SetTotalBlocks(totalSpawnedBlocks);
-        //Debug.Log($"[BlockSpawner] Spawned {totalSpawnedBlocks} blocks");
+        Debug.Log($"[BlockSpawner] Spawned {totalSpawnedBlocks} blocks");
     }
 }

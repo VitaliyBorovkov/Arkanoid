@@ -12,18 +12,27 @@ public class BlockView : View
     [Inject] public BlockDestroyedSignal blockDestroyedSignal { get; set; }
 
     public BlockSettings Settings => blockSettings;
+    private int currentHits;
 
     public event Action OnHitEvent;
 
     public void Initialize(BlockSettings settings)
     {
         blockSettings = settings;
+        currentHits = settings.hitPoints;
+
         spriteRenderer.color = blockSettings.blockColor;
+        spriteRenderer.sprite = blockSettings.blockSprite;
     }
 
     public void Hit()
     {
-        OnHitEvent?.Invoke();
+        currentHits--;
+
+        if (currentHits <= 0)
+        {
+            OnHitEvent?.Invoke();
+        }
     }
 
     public void DestroyBlock()

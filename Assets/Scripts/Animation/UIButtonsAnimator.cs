@@ -50,7 +50,7 @@ public class UIButtonsAnimator : MonoBehaviour
                 .OnComplete(() =>
                 {
                     btn.interactable = true;
-                    Debug.Log($"[UIButtonsAnimator] {btn.name} animation complete");
+                    //Debug.Log($"[UIButtonsAnimator] {btn.name} animation complete");
                 });
         }
     }

@@ -39,7 +39,7 @@ public class SunshineRotator : MonoBehaviour
 
     public void StartDOTween()
     {
-        Debug.Log($"[SunshineRotator] StartDOTween called on: {gameObject.name}");
+        //Debug.Log($"[SunshineRotator] StartDOTween called on: {gameObject.name}");
 
         transform.DORotate(new Vector3(0f, 0f, -360f), rotationSpeed, RotateMode.FastBeyond360)
             .SetEase(Ease.Linear)
