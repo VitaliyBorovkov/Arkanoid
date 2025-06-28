@@ -33,15 +33,7 @@ public class GameContext : MVCSContext
         injectionBinder.Bind<BallCollisionHandler>().ToValue(ballColisionHandler);
 
         var blockSpawner = GameObject.FindObjectOfType<BlockSpawner>();
-        if (blockSpawner == null)
-        {
-            Debug.LogError("[GameContext] BlockSpawner not found in scene!");
-        }
-        else
-        {
-
-            injectionBinder.Bind<BlockSpawner>().ToValue(blockSpawner);
-        }
+        injectionBinder.Bind<BlockSpawner>().ToValue(blockSpawner);
 
         var blockCounterService = injectionBinder.GetInstance<BlockCounterService>();
         var concreteBinder = injectionBinder as InjectionBinder;

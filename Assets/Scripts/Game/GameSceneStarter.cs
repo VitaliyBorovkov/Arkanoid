@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameSceneStarter : MonoBehaviour
 {
+    [SerializeField] private Transform levelRoot;
+
     private void Start()
     {
         var contextView = FindObjectOfType<ContextView>();
@@ -22,6 +24,6 @@ public class GameSceneStarter : MonoBehaviour
 
         var signal = context.injectionBinder.GetInstance<GameSceneStartedSignal>();
         signal.Dispatch();
-        //Debug.Log("[GameSceneStarter] GameSceneStartedSignal dispatched.");
+        Debug.Log("[GameSceneStarter] GameSceneStartedSignal dispatched.");
     }
 }
