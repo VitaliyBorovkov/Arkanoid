@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class GameContext : MVCSContext
 {
-    public GameContext(MonoBehaviour view) : base(view)
+    private readonly Transform levelRoot;
+
+    public GameContext(MonoBehaviour view, Transform levelRoot) : base(view)
     {
+        this.levelRoot = levelRoot;
     }
 
     protected override void mapBindings()
@@ -32,13 +35,10 @@ public class GameContext : MVCSContext
         var ballColisionHandler = GameObject.FindObjectOfType<BallCollisionHandler>();
         injectionBinder.Bind<BallCollisionHandler>().ToValue(ballColisionHandler);
 
-        var blockSpawner = GameObject.FindObjectOfType<BlockSpawner>();
-        injectionBinder.Bind<BlockSpawner>().ToValue(blockSpawner);
-
         var blockCounterService = injectionBinder.GetInstance<BlockCounterService>();
         var concreteBinder = injectionBinder as InjectionBinder;
-
-        blockSpawner.Initialize(concreteBinder.injector, blockCounterService);
+        var levelLoader = new LevelLoader(levelRoot, concreteBinder.injector, injectionBinder.GetInstance<BlockCounterService>());
+        injectionBinder.Bind<LevelLoader>().ToValue(levelLoader);
 
         var endGameView = GameObject.FindObjectOfType<EndGameView>();
         concreteBinder.injector.Inject(endGameView);
