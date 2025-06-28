@@ -17,11 +17,14 @@ public class PaddleView : MonoBehaviour
 
     private void Start()
     {
-        float halfWidth = transform.localScale.x / 2f;
-        float screenHalfHeight = Camera.main.aspect * Camera.main.orthographicSize;
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        float halfWidth = renderer.bounds.extents.x;
 
-        minX = -screenHalfHeight + halfWidth;
-        maxX = screenHalfHeight - halfWidth;
+        float leftWorld = Camera.main.ViewportToWorldPoint(Vector3.zero).x;
+        float rightWorld = Camera.main.ViewportToWorldPoint(Vector3.right).x;
+
+        minX = leftWorld + halfWidth;
+        maxX = rightWorld - halfWidth;
     }
 
     private void Update()
@@ -51,7 +54,7 @@ public class PaddleView : MonoBehaviour
     private void FollowFinger(Touch touch)
     {
         Vector2 touchWorldPos = Camera.main.ScreenToWorldPoint(touch.position);
-        float clampedX = Mathf.Clamp(touchWorldPos.x, paddleSettings.minX, paddleSettings.maxX);
+        float clampedX = Mathf.Clamp(touchWorldPos.x, minX, maxX);
 
         float smoothSpeed = paddleSettings.moveSpeed * paddleSettings.smoothFactor;
         float newX = Mathf.Lerp(rb.position.x, clampedX, Time.deltaTime * smoothSpeed);

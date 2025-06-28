@@ -11,13 +11,10 @@ public class GameContext : MVCSContext
 
     protected override void mapBindings()
     {
-        //Debug.Log("GameContext.mapBindings called");
-
         injectionBinder.Bind<LaunchBallSignal>().ToSingleton();
         injectionBinder.Bind<ResetBallSignal>().ToSingleton();
         injectionBinder.Bind<BallLostSignal>().ToSingleton();
         injectionBinder.Bind<BlockDestroyedSignal>().ToSingleton();
-        //injectionBinder.Bind<ScoreUpdatedSignal>().ToSingleton();
         injectionBinder.Bind<LivesUpdatedSignal>().ToSingleton();
         injectionBinder.Bind<GameSceneStartedSignal>().ToSingleton();
         injectionBinder.Bind<GameEndedSignal>().ToSingleton();
@@ -51,9 +48,6 @@ public class GameContext : MVCSContext
 
         blockSpawner.Initialize(concreteBinder.injector, blockCounterService);
 
-        //var scoreView = GameObject.FindObjectOfType<ScoreView>();
-        //concreteBinder.injector.Inject(scoreView);
-
         var endGameView = GameObject.FindObjectOfType<EndGameView>();
         concreteBinder.injector.Inject(endGameView);
 
@@ -61,7 +55,6 @@ public class GameContext : MVCSContext
         mediationBinder.Bind<BlockView>().To<BlockMediator>();
         mediationBinder.Bind<BallView>().To<BallMediator>();
         mediationBinder.Bind<PaddleView>().To<PaddleMediator>();
-        //mediationBinder.Bind<ScoreView>().To<ScoreMediator>();
         mediationBinder.Bind<IconCounterView>().To<LivesMediator>();
         mediationBinder.Bind<BallCollisionHandler>().ToMediator<NullMediator>();
     }
