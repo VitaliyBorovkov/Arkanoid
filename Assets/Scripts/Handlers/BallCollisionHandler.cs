@@ -5,8 +5,6 @@ public class BallCollisionHandler : MonoBehaviour
 {
     [SerializeField] private BallView ballView;
 
-    //private Vector2? pendingReflect;
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         BlockView blockView = collision.gameObject.GetComponent<BlockView>();

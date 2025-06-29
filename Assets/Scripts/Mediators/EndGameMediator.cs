@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class EndGameMediator : Mediator
 {
     [Inject] public EndGameView view { get; set; }
-    [Inject] public GameEndedSignal gameEndedSignal { get; set; }
+    //[Inject] public GameEndedSignal gameEndedSignal { get; set; }
 
     public override void OnRegister()
     {
         //Debug.Log("EndGameMediator: Registered");
 
-        gameEndedSignal.AddListener(OnGameEnded);
+        //gameEndedSignal.AddListener(OnGameEnded);
 
         view.RepeatButton.onClick.AddListener(OnRepeatButtonClicked);
         view.ExitToMenuButton.onClick.AddListener(OnExitToMenuButtonClicked);
@@ -21,16 +21,30 @@ public class EndGameMediator : Mediator
     public override void OnRemove()
     {
         Debug.Log("EndGameMediator: Removed");
-        gameEndedSignal.RemoveListener(OnGameEnded);
+        //gameEndedSignal.RemoveListener(OnGameEnded);
 
         view.RepeatButton.onClick.RemoveListener(OnRepeatButtonClicked);
         view.ExitToMenuButton.onClick.RemoveListener(OnExitToMenuButtonClicked);
     }
 
-    private void OnGameEnded(GameResult gameResult)
-    {
-        view.ShowEndScreen(gameResult);
-    }
+    //private void OnGameEnded(GameResult gameResult)
+    //{
+    //    view.ShowEndScreen(gameResult);
+
+    //    if (gameResult.IsWin)
+    //    {
+    //        view.StartCoroutine(WaitAndLoadNextLevel());
+    //    }
+    //}
+
+    //private IEnumerator WaitAndLoadNextLevel()
+    //{
+    //    yield return null;
+    //    yield return new WaitForSecondsRealtime(5f);
+
+    //    Time.timeScale = 1f;
+    //    levelLoader.LoadNextLevel();
+    //}
 
     private void OnRepeatButtonClicked()
     {

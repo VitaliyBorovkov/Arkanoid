@@ -2,6 +2,8 @@ public class BlockCounterService
 {
     private int totalBlocks;
 
+    public int RemainingBlocks => totalBlocks;
+
     public void SetTotalBlocks(int count)
     {
         totalBlocks = count;
