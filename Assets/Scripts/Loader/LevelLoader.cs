@@ -47,6 +47,20 @@ public class LevelLoader
         currentLevelIndex = levelIndex;
     }
 
+    public bool HasNextLevel()
+    {
+        string nextPath = $"Levels/Level{currentLevelIndex + 1}";
+        Debug.Log($"[LevelLoader] Trying to load: {nextPath}");
+
+        GameObject levelPrefab = Resources.Load<GameObject>(nextPath);
+        if (levelPrefab == null)
+        {
+            Debug.LogError($"[LevelLoader] Level prefab not found: {nextPath}");
+
+        }
+        return true;
+    }
+
     public void LoadNextLevel()
     {
         LoadLevel(currentLevelIndex + 1);

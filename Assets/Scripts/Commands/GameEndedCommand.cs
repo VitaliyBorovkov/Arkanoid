@@ -22,7 +22,5 @@ public class GameEndedCommand : Command
             Debug.Log("[GameEndedCommand] Victory — loading next level...");
             levelLoader.LoadNextLevel();
         }
-
-        endGameView.ShowEndScreen(gameResult);
     }
 }
