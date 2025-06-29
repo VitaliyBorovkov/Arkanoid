@@ -65,6 +65,19 @@ public class EndGameView : View
         StartCoroutine(DelayPauseGame());
     }
 
+    public void HideEndScreen()
+    {
+        Debug.Log("[EndGameView] HideEndScreen called");
+
+        var canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup != null)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+    }
+
     private IEnumerator DelayPauseGame()
     {
         yield return null;
