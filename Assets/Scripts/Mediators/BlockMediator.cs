@@ -23,9 +23,8 @@ public class BlockMediator : Mediator
         view.OnHitEvent -= OnHit;
     }
 
-    private void OnHit()
+    public void OnHit()
     {
-        //Debug.Log("[BlockMediator] OnHit called");
         if (scoreModel == null)
         {
             Debug.LogError("[BlockMediator] scoreModel is NULL!");
@@ -36,12 +35,16 @@ public class BlockMediator : Mediator
             blockDestroyedSignal.Dispatch(view.Settings.score);
 
             blockCounterService.OnBlockDestroyed();
+
+            int remaining = blockCounterService.RemainingBlocks;
+
             if (blockCounterService.AreAllBlocksDestroyed())
             {
                 gameEndedSignal.Dispatch(new GameResult(true, scoreModel.CurrentScore, livesModel.CurrentLives));
             }
 
             view.DestroyBlock();
+            Debug.Log($"[BlockMediator] Block destroyed: Remaining blocks: {remaining}");
         }
     }
 }

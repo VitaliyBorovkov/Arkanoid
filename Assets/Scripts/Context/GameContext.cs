@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class GameContext : MVCSContext
 {
-    public GameContext(MonoBehaviour view) : base(view)
+    private readonly Transform levelRoot;
+
+    public GameContext(MonoBehaviour view, Transform levelRoot) : base(view)
     {
+        this.levelRoot = levelRoot;
     }
 
     protected override void mapBindings()
@@ -25,6 +28,7 @@ public class GameContext : MVCSContext
 
         commandBinder.Bind<BallLostSignal>().To<BallLostCommand>();
         commandBinder.Bind<GameSceneStartedSignal>().To<GameSceneStartedCommand>();
+        commandBinder.Bind<GameEndedSignal>().To<GameEndedCommand>();
 
         var paddleView = GameObject.FindObjectOfType<PaddleView>();
         injectionBinder.Bind<PaddleView>().ToValue(paddleView);
@@ -32,16 +36,10 @@ public class GameContext : MVCSContext
         var ballColisionHandler = GameObject.FindObjectOfType<BallCollisionHandler>();
         injectionBinder.Bind<BallCollisionHandler>().ToValue(ballColisionHandler);
 
-        var blockSpawner = GameObject.FindObjectOfType<BlockSpawner>();
-        injectionBinder.Bind<BlockSpawner>().ToValue(blockSpawner);
-
         var blockCounterService = injectionBinder.GetInstance<BlockCounterService>();
         var concreteBinder = injectionBinder as InjectionBinder;
-
-        blockSpawner.Initialize(concreteBinder.injector, blockCounterService);
-
-        var endGameView = GameObject.FindObjectOfType<EndGameView>();
-        concreteBinder.injector.Inject(endGameView);
+        var levelLoader = new LevelLoader(levelRoot, concreteBinder.injector, injectionBinder.GetInstance<BlockCounterService>());
+        injectionBinder.Bind<LevelLoader>().ToValue(levelLoader);
 
         mediationBinder.Bind<EndGameView>().To<EndGameMediator>();
         mediationBinder.Bind<BlockView>().To<BlockMediator>();
